@@ -1,73 +1,57 @@
-// =========================
-// KAMLA POWER SOLUTIONS
-// Premium JavaScript
-// =========================
+// Customer Reviews Slider
 
-// LOADER
+const reviews = [
+  "Excellent service and genuine products. Highly recommended.",
+  "Very professional battery installation and support.",
+  "Best battery dealer in Prayagraj with affordable prices.",
+  "Quick response and reliable service.",
+  "Quality products from trusted brands."
+];
 
-window.addEventListener("load", () => {
+let reviewIndex = 0;
 
-const loader = document.getElementById("loader");
+const reviewText = document.getElementById("review-text");
 
-setTimeout(() => {
+function changeReview() {
+  if (reviewText) {
+    reviewText.style.opacity = "0";
 
-loader.style.opacity = "0";
+    setTimeout(() => {
+      reviewText.textContent = reviews[reviewIndex];
+      reviewText.style.opacity = "1";
 
-loader.style.transition = "0.8s";
+      reviewIndex++;
 
-setTimeout(() => {
-loader.style.display = "none";
-}, 800);
+      if (reviewIndex >= reviews.length) {
+        reviewIndex = 0;
+      }
+    }, 400);
+  }
+}
 
-}, 1500);
+setInterval(changeReview, 3000);
 
+// Year
+
+const year = document.getElementById("year");
+
+if (year) {
+  year.textContent = new Date().getFullYear();
+}
+
+// Scroll Animation
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
 });
 
-// =========================
-// ANIMATED STATISTICS
-// =========================
-
-const counters = document.querySelectorAll("[data-target]");
-
-const startCounter = (counter) => {
-
-const target = +counter.getAttribute("data-target");
-
-let count = 0;
-
-const speed = target / 100;
-
-const update = () => {
-
-if (count < target) {
-
-count += speed;
-
-counter.innerText = Math.ceil(count);
-
-requestAnimationFrame(update);
-
-}
-
-else {
-
-counter.innerText = target + "+";
-
-}
-
-};
-
-update();
-
-};
-
-const observer = new IntersectionObserver(
-
-(entries) => {
-
-entries.forEach(entry => {
-
-if (entry.isIntersecting) {
+document.querySelectorAll(".animate").forEach(el => {
+  observer.observe(el);
+});if (entry.isIntersecting) {
 
 startCounter(entry.target);
 
