@@ -1,306 +1,105 @@
-// Customer Reviews Slider
+// ==========================================
+// Kamla Power Solutions
+// script.js
+// ==========================================
 
-const reviews = [
-  "Excellent service and genuine products. Highly recommended.",
-  "Very professional battery installation and support.",
-  "Best battery dealer in Prayagraj with affordable prices.",
-  "Quick response and reliable service.",
-  "Quality products from trusted brands."
-];
+// Smooth scroll for navigation
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', function(e){
+        e.preventDefault();
 
-let reviewIndex = 0;
+        const target=document.querySelector(this.getAttribute('href'));
 
-const reviewText = document.getElementById("review-text");
-
-function changeReview() {
-  if (reviewText) {
-    reviewText.style.opacity = "0";
-
-    setTimeout(() => {
-      reviewText.textContent = reviews[reviewIndex];
-      reviewText.style.opacity = "1";
-
-      reviewIndex++;
-
-      if (reviewIndex >= reviews.length) {
-        reviewIndex = 0;
-      }
-    }, 400);
-  }
-}
-
-setInterval(changeReview, 3000);
-
-// Year
-
-const year = document.getElementById("year");
-
-if (year) {
-  year.textContent = new Date().getFullYear();
-}
-
-// Scroll Animation
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-    }
-  });
+        if(target){
+            target.scrollIntoView({
+                behavior:'smooth'
+            });
+        }
+    });
 });
 
-document.querySelectorAll(".animate").forEach(el => {
-  observer.observe(el);
-});if (entry.isIntersecting) {
+// Reveal animation
 
-startCounter(entry.target);
+const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add('show');
+        }
+    });
+},{
+    threshold:.15
+});
 
-observer.unobserve(entry.target);
+document.querySelectorAll('.section,.service-card,.review-card,.gallery img,.stat-card').forEach(el=>{
+    observer.observe(el);
+});
+
+// Counter Animation
+
+document.querySelectorAll('.stat-card h3').forEach(counter=>{
+
+const finalValue=counter.innerText;
+
+if(!isNaN(parseInt(finalValue))){
+
+let count=0;
+
+const end=parseInt(finalValue);
+
+const timer=setInterval(()=>{
+
+count+=Math.ceil(end/40);
+
+if(count>=end){
+
+counter.innerText=finalValue;
+
+clearInterval(timer);
+
+}else{
+
+counter.innerText=count+"+";
 
 }
 
-});
-
-},
-
-{
-
-threshold:0.5
-
-}
-
-);
-
-counters.forEach(counter => {
-
-observer.observe(counter);
-
-});
-
-// =========================
-// SCROLL REVEAL
-// =========================
-
-const revealElements = document.querySelectorAll(
-
-".stat-card, .service-card, .contact-box"
-
-);
-
-const revealObserver = new IntersectionObserver(
-
-(entries) => {
-
-entries.forEach(entry => {
-
-if (entry.isIntersecting) {
-
-entry.target.classList.add("show");
+},40);
 
 }
 
 });
 
-},
+// Auto Review Highlight
 
-{
+const reviews=document.querySelectorAll(".review-card");
 
-threshold:0.2
+let reviewIndex=0;
 
-}
+setInterval(()=>{
 
-);
+reviews.forEach(card=>card.style.transform="scale(1)");
 
-revealElements.forEach(el => {
+reviews[reviewIndex].style.transform="scale(1.05)";
 
-revealObserver.observe(el);
+reviewIndex++;
 
-});
+if(reviewIndex>=reviews.length){
 
-// =========================
-// STICKY NAVBAR EFFECT
-// =========================
-
-window.addEventListener("scroll", () => {
-
-const header = document.querySelector("header");
-
-if (window.scrollY > 50) {
-
-header.style.background =
-"rgba(10,10,20,0.85)";
-
-header.style.backdropFilter =
-"blur(15px)";
+reviewIndex=0;
 
 }
 
-else {
+},2500);
 
-header.style.background =
-"rgba(0,0,0,0.25)";
+// Gallery Hover Effect
 
-}
+document.querySelectorAll(".gallery img").forEach(img=>{
 
-});
+img.addEventListener("click",()=>{
 
-// =========================
-// SMOOTH SCROLL LINKS
-// =========================
-
-document.querySelectorAll('a[href^="#"]')
-
-.forEach(anchor => {
-
-anchor.addEventListener("click",
-
-function(e){
-
-e.preventDefault();
-
-const target = document.querySelector(
-
-this.getAttribute("href")
-
-);
-
-target.scrollIntoView({
-
-behavior:"smooth"
+img.classList.toggle("zoom");
 
 });
 
 });
 
-});
-
-// =========================
-// REVIEW CAROUSEL
-// =========================
-
-const reviews = [
-
-{
-name:"Customer",
-text:"Excellent service and genuine products."
-},
-
-{
-name:"Customer",
-text:"Quick installation and professional support."
-},
-
-{
-name:"Customer",
-text:"Best place for batteries and inverters in Naini."
-}
-
-];
-
-let currentReview = 0;
-
-function changeReview(){
-
-const reviewBox =
-document.getElementById("review-text");
-
-if(!reviewBox) return;
-
-reviewBox.innerText =
-reviews[currentReview].text;
-
-currentReview++;
-
-if(currentReview >= reviews.length){
-
-currentReview = 0;
-
-}
-
-}
-
-setInterval(changeReview,4000);
-
-// =========================
-// GALLERY LIGHTBOX
-// =========================
-
-const galleryImages =
-document.querySelectorAll(".gallery-grid img");
-
-galleryImages.forEach(img => {
-
-img.addEventListener("click", () => {
-
-const overlay =
-document.createElement("div");
-
-overlay.style.position = "fixed";
-
-overlay.style.top = "0";
-
-overlay.style.left = "0";
-
-overlay.style.width = "100%";
-
-overlay.style.height = "100%";
-
-overlay.style.background =
-"rgba(0,0,0,0.95)";
-
-overlay.style.display = "flex";
-
-overlay.style.justifyContent =
-"center";
-
-overlay.style.alignItems =
-"center";
-
-overlay.style.zIndex = "99999";
-
-const image =
-document.createElement("img");
-
-image.src = img.src;
-
-image.style.maxWidth = "90%";
-
-image.style.maxHeight = "90%";
-
-image.style.borderRadius = "15px";
-
-overlay.appendChild(image);
-
-overlay.addEventListener("click", () => {
-
-overlay.remove();
-
-});
-
-document.body.appendChild(overlay);
-
-});
-
-});
-
-// =========================
-// YEAR AUTO UPDATE
-// =========================
-
-const year =
-document.getElementById("year");
-
-if(year){
-
-year.textContent =
-new Date().getFullYear();
-
-}
-
-// =========================
-// CONSOLE SIGNATURE
-// =========================
-
-console.log(
-"Kamla Power Solutions Website Loaded"
-);
+console.log("Kamla Power Solutions Website Loaded Successfully.");
